@@ -1,7 +1,7 @@
-id,fecha,localidad,fenomeno,nivel+AF8-riesgo,descripcion
-MEI+AC0-013,2026+AC0-11+AC0-18,Santiago de Compostela,santa+AF8-compana,5,Aviso recibido antes del cambio de turno.
-MEI+AC0-014,2026+AC0-11+AC0-18,Padr+APM-n,meiga,2,El archivo desaparece al compartir pantalla.
-MEI+AC0-015,2026+AC0-11+AC0-18,Ames,aparicion,3,El detector responde con un enigm+AOE-tico depende.
-MEI+AC0-016,2026+AC0-11+AC0-18,Teo,trasno,1,Ha cambiado la fuente de todos los documentos.
-MEI+AC0-002,2026+AC0-11+AC0-18,Fisterra,aparicion,4,Reenv+AO0-o del mismo parte.
-MEI+AC0-017,2026+AC0-11+AC0-18,Ordes,dragon,3,La criatura no figura en el cat+AOE-logo de esta oficina.
+id,fecha,localidad,fenomeno,nivel_riesgo,descripcion
+MEI-013,2026-11-18,Santiago de Compostela,santa_compana,5,Aviso recibido antes del cambio de turno.
+MEI-014,2026-11-18,Padrón,meiga,2,El archivo desaparece al compartir pantalla.
+MEI-015,2026-11-18,Ames,aparicion,3,El detector responde con un enigmático depende.
+MEI-016,2026-11-18,Teo,trasno,1,Ha cambiado la fuente de todos los documentos.
+MEI-002,2026-11-18,Fisterra,aparicion,4,Reenvío del mismo parte.
+MEI-017,2026-11-18,Ordes,dragon,3,La criatura no figura en el catálogo de esta oficina.

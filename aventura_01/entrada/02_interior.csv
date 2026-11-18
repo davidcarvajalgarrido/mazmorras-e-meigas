@@ -1,7 +1,7 @@
-id,fecha,localidad,fenomeno,nivel+AF8-riesgo,descripcion
-MEI+AC0-007,2026+AC0-11+AC0-18,Lugo,santa+AF8-compana,5,Comitiva silenciosa. Aviso ficticio para el ejercicio.
-MEI+AC0-008,2026+AC0-11+AC0-18,Ourense,trasno,1,El teclado escribe los puntos y coma por su cuenta.
-MEI+AC0-009,2026+AC0-11+AC0-18,Allariz,meiga,4,La impresora solo imprime cuando nadie la mira.
-MEI+AC0-010,2026+AC0-11+AC0-18,Monforte de Lemos,aparicion,2,Pide contrase+APE-a de invitado.
-MEI+AC0-011,2026+AC0-11+AC0-18,Ribadavia,trasno,depende,Clasificaci+APM-n de riesgo bastante expresiva.
-MEI+AC0-012,2026+AC0-11+AC0-18,Lugo,meiga,9,Nueve sobre cinco. La delegaci+APM-n insiste.
+id,fecha,localidad,fenomeno,nivel_riesgo,descripcion
+MEI-007,2026-11-18,Lugo,santa_compana,5,Comitiva silenciosa. Aviso ficticio para el ejercicio.
+MEI-008,2026-11-18,Ourense,trasno,1,El teclado escribe los puntos y coma por su cuenta.
+MEI-009,2026-11-18,Allariz,meiga,4,La impresora solo imprime cuando nadie la mira.
+MEI-010,2026-11-18,Monforte de Lemos,aparicion,2,Pide contraseña de invitado.
+MEI-011,2026-11-18,Ribadavia,trasno,depende,Clasificación de riesgo bastante expresiva.
+MEI-012,2026-11-18,Lugo,meiga,9,Nueve sobre cinco. La delegación insiste.

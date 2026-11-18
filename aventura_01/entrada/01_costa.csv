@@ -1,7 +1,7 @@
-id,fecha,localidad,fenomeno,nivel+AF8-riesgo,descripcion
-MEI+AC0-001,2026+AC0-11+AC0-18,Muros,trasno,2,Ha renombrado los archivos a final+AF8-definitivo+AF8-ahora+AF8-si.csv
-MEI+AC0-002,2026+AC0-11+AC0-18,Fisterra,aparicion,4,Se manifiesta cuando falla el wifi. Correlaci+APM-n pendiente de revisar.
-MEI+AC0-003,2026+AC0-11+AC0-18,Mux+AO0-a,meiga,3,Ha presentado el parte correctamente. Se solicita reconocimiento.
-MEI+AC0-004,2026+AC0-11+AC0-18,Noia,aparicion,1,Segunda planta. El edificio solo tiene una.
-MEI+AC0-005,2026+AC0-11+AC0-18,,trasno,2,Aqu+AO0- al lado del cruceiro.
-MEI+AC0-006,2026+AC0-11+AC0-31,Muros,meiga,3,La fecha procede de un calendario encantado.
+id,fecha,localidad,fenomeno,nivel_riesgo,descripcion
+MEI-001,2026-11-18,Muros,trasno,2,Ha renombrado los archivos a final_definitivo_ahora_si.csv
+MEI-002,2026-11-18,Fisterra,aparicion,4,Se manifiesta cuando falla el wifi. Correlación pendiente de revisar.
+MEI-003,2026-11-18,Muxía,meiga,3,Ha presentado el parte correctamente. Se solicita reconocimiento.
+MEI-004,2026-11-18,Noia,aparicion,1,Segunda planta. El edificio solo tiene una.
+MEI-005,2026-11-18,,trasno,2,Aquí al lado del cruceiro.
+MEI-006,2026-11-31,Muros,meiga,3,La fecha procede de un calendario encantado.
