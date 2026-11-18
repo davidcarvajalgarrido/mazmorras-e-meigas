@@ -1,0 +1,11 @@
+{
+  "entrada": "entrada",
+  "salida": "salida",
+  "riesgo_prioritario": 4,
+  "fenomenos": [
+    "trasno",
+    "meiga",
+    "aparicion",
+    "santa_compana"
+  ]
+}

@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+aventura_01/salida/*
+!aventura_01/salida/.gitkeep
+aventura_01/salida_riesgo_5/
+aventura_01/salida_ejemplos/
+*.log
+*.tmp
