@@ -2,15 +2,21 @@
 import argparse
 import hmac
 import json
+import math
 import os
 import secrets
 import threading
 import time
 from datetime import date, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
+from dotenv import load_dotenv
+
 CLAVE_DEMO = 'clave-publica-solo-para-la-demo'
+
+load_dotenv(Path(__file__).resolve().parent / '.env', override=False)
 
 
 def prediccion_ejemplo(municipio=15078):
@@ -152,17 +158,48 @@ class Manejador(BaseHTTPRequestHandler):
             try:
                 if datos.get('criatura') != 'espiritu_da_bretema':
                     raise ValueError('Criatura desconocida')
-                if type(datos.get('municipio_id')) is not int or datos['municipio_id'] <= 0:
-                    raise ValueError('municipio_id debe ser un entero positivo')
                 if not isinstance(datos.get('municipio'), str) or not datos['municipio'].strip():
                     raise ValueError('Falta el nombre del municipio')
                 if date.fromisoformat(datos.get('fecha', '')) < date.today():
                     raise ValueError('La fecha ya ha pasado')
                 if datos.get('franja') not in ('manha', 'tarde', 'noite'):
                     raise ValueError('Franja desconocida')
-                probabilidad = datos.get('probabilidad_lluvia')
-                if type(probabilidad) not in (int, float) or not 60 <= probabilidad <= 100:
-                    raise ValueError('El ritual requiere una probabilidad de lluvia entre 60 y 100')
+                fuente = datos.get('fuente_meteorologica')
+                variable = datos.get('variable_meteorologica')
+                unidad = datos.get('unidad_meteorologica')
+                criterio = datos.get('criterio_ritual')
+                if fuente == 'MeteoSIX v5.1':
+                    cantidad = datos.get('precipitacion_lm2')
+                    coordenadas = datos.get('coordenadas')
+                    if variable != 'precipitation_amount' or unidad != 'lm2':
+                        raise ValueError('MeteoSIX requiere precipitation_amount en lm2')
+                    if criterio != 'precipitation_amount > 0 lm2':
+                        raise ValueError('El criterio declarado para MeteoSIX no es válido')
+                    if ('probabilidad_lluvia' in datos
+                            or type(cantidad) not in (int, float)
+                            or cantidad <= 0
+                            or (type(cantidad) is float and not math.isfinite(cantidad))):
+                        raise ValueError('MeteoSIX requiere una cantidad horaria positiva')
+                    if (not isinstance(coordenadas, dict)
+                            or type(coordenadas.get('longitud')) not in (int, float)
+                            or type(coordenadas.get('latitud')) not in (int, float)
+                            or not -180 <= coordenadas['longitud'] <= 180
+                            or not -90 <= coordenadas['latitud'] <= 90):
+                        raise ValueError('MeteoSIX requiere coordenadas válidas')
+                else:
+                    if fuente not in ('MeteoGalicia JSON municipal', 'ensayo sintético local'):
+                        raise ValueError('Fuente meteorológica desconocida')
+                    if variable != 'pchoiva' or unidad != '%':
+                        raise ValueError('MeteoGalicia requiere pchoiva en porcentaje')
+                    if criterio != 'probabilidad_lluvia >= 60 %':
+                        raise ValueError('El criterio declarado para MeteoGalicia no es válido')
+                    if type(datos.get('municipio_id')) is not int or datos['municipio_id'] <= 0:
+                        raise ValueError('municipio_id debe ser un entero positivo')
+                    probabilidad = datos.get('probabilidad_lluvia')
+                    if (type(probabilidad) not in (int, float)
+                            or not 60 <= probabilidad <= 100
+                            or 'precipitacion_lm2' in datos):
+                        raise ValueError('El ritual requiere una probabilidad de lluvia entre 60 y 100')
             except (ValueError, TypeError) as error:
                 self.responder(422, {'error': str(error)})
                 return

@@ -2,11 +2,14 @@
 
 ## Preparación del ponente
 
-1. Instalar requirements con el intérprete seleccionado en el editor.
+1. Instalar requirements con el intérprete seleccionado en el editor y crear
+   `aventura_02/.env` desde `.env.example`.
 2. Ejecutar `python aventura_02/ensayar.py`: final feliz y errores.
-3. Abrir etapas y cliente.py; aumentar fuente y dejar visibles ambos terminales.
-4. Durante la charla: servidor --demo en un terminal; cliente en otro.
-5. Ensayar una petición real. Si falla la red, seleccionar --offline explícitamente.
+3. Abrir etapas y cliente.py; dejar visibles ambos terminales.
+4. Durante la charla: servidor --demo en un terminal; cliente en otro. Ensayar
+   la clave MeteoSIX y verificar que no aparece en consola.
+5. Si falla la red o la clave no está disponible, seleccionar --offline
+   explícitamente; también queda disponible el JSON municipal público.
 6. Reiniciar el servidor antes de una nueva pasada para recuperar INV-001.
    Los tokens anteriores dejan de valer. El archivo de resultado se sobrescribe.
 
@@ -70,6 +73,26 @@ Offline: nueve franjas; mañana por la mañana, 70 %, es la primera elegible.
 
 Antes del descanso: ya sabemos pedir información externa y utilizarla.
 
+Etapa 06 (`python aventura_02/etapas/06_consultar_meteosix.py`): mostrar
+consulta GET autenticada con el parámetro `API_KEY` oculto. MeteoSIX v5.1
+responde GeoJSON, no el objeto municipal anterior. Seguir
+`features → properties → days → variables → values`; comprobar `timeInstant`,
+`value` y la unidad antes de decidir.
+
+El manual oficial no ofrece una probabilidad de lluvia para esta consulta.
+`precipitation_amount` es cantidad acumulada en la hora anterior, unidad
+`lm2` (equivalente a mm), no porcentaje. La regla específica es elegir la
+primera franja local que contenga una hora con cantidad >0 lm2; valores nulos
+no cuentan. Se mantienen `pchoiva >=60 %` para el JSON público y el ensayo.
+Después de enseñar la consulta:
+
+```sh
+python aventura_02/cliente.py --fuente meteosix --demo
+```
+
+El cliente completo vuelve a consultar MeteoSIX y continúa por el mismo flujo
+de autenticación, POST y GET de la invocación.
+
 ## 3. Solicitar la invocación
 
 Etapa 03: clave → token. Mostrar nombres de cabecera y variables, no secretos.
@@ -101,7 +124,7 @@ contrastar con regenerar archivos en la primera aventura.
 - Se pierde el hilo: volver al recorrido de seis pasos y señalar el actual.
 - Error al escribir: abrir la etapa ya terminada y continuar.
 - Falla Internet: --offline explícito, manteniendo HTTP real local.
-- La clave de MeteoSIX no llega: no afecta al JSON público que usamos.
+- La clave de MeteoSIX no llega: usar el JSON público o seleccionar --offline.
 - No hay franja elegible: resultado correcto; usar ensayo sintético para continuar.
 - Token inválido tras reinicio: obtener uno nuevo.
 - Falta tiempo: conservar GET → JSON → autenticación → POST → GET; demostrar 401

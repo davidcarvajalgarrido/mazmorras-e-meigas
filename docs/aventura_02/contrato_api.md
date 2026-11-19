@@ -3,6 +3,54 @@
 Base local: `http://127.0.0.1:8765`. Intercambio JSON UTF-8.
 Servidor preparado; el objetivo docente es consumir servicios desde Python.
 
+## Fuentes meteorológicas
+
+Ejecuta estos comandos desde la raíz del repositorio con el servidor local
+`python aventura_02/servidor.py --demo` abierto en la primera terminal:
+
+```sh
+python aventura_02/cliente.py --demo
+python aventura_02/cliente.py --fuente meteogalicia --demo
+python aventura_02/cliente.py --fuente meteosix --demo
+python aventura_02/cliente.py --offline --demo
+```
+
+Sin `--fuente`, se conserva el JSON público municipal de MeteoGalicia.
+`--offline` consulta la predicción sintética del servidor local y no se combina
+con `--fuente`.
+
+### MeteoSIX v5.1
+
+Según el [manual oficial v5.1](https://meteo-estaticos.xunta.gal/datosred/infoweb/meteo/proxectos/meteosix/API_MeteoSIX_v5.1_gl.pdf),
+publicado en octubre de 2026, la consulta es un GET HTTPS a
+`https://servizos.meteogalicia.gal/apiv5/getNumericForecastInfo`.
+`API_KEY` es obligatorio y se envía como parámetro; `coords` es
+`longitud,latitud`. Se solicitan `variables=precipitation_amount`,
+`units=lm2`, `format=application/json`, `lang=gl` y `tz=Europe/Madrid`.
+Las coordenadas predeterminadas son las de Santiago de Compostela; `--lon`,
+`--lat` y `--ubicacion` permiten cambiarlas.
+
+El JSON es GeoJSON: `features[].properties.days[]` contiene periodos y una
+lista `variables[]`; la variable tiene `name`, `units` y `values[]`, cuyos
+elementos incluyen `timeInstant`, `modelRun` y `value`. Para
+`precipitation_amount`, el manual define precipitación acumulada durante la
+hora anterior y unidad `lm2` (l/m2, equivalente a mm). El manual no ofrece una
+variable de probabilidad de lluvia. Los valores ausentes (`null`) se omiten;
+un cuerpo de error de MeteoSIX puede ser HTTP 200 con `exception`, por lo que
+también se valida el JSON y no solo el estado HTTP.
+
+La regla original de MeteoGalicia municipal y offline permanece:
+`pchoiva >= 60 %`. Para MeteoSIX se agrupan los valores horarios en mañana
+(06:00–11:59), tarde (12:00–17:59) y noche (18:00–23:59), hora local de
+Europe/Madrid; la primera franja cronológica con `precipitation_amount > 0 lm2`
+es elegible. No se inventan porcentajes ni se llena `probabilidad_lluvia`.
+
+La invocación declara `fuente_meteorologica`, `variable_meteorologica`,
+`unidad_meteorologica` y `criterio_ritual`; el campo numérico depende de la
+fuente (`probabilidad_lluvia` o `precipitacion_lm2`). Para MeteoSIX se incluyen
+también `coordenadas` en el ritual. La API local valida los metadatos y el
+criterio correspondiente.
+
 ## Presentar credenciales
 
 `POST /sesiones`, cabecera `X-API-Key: <clave>`; sin cuerpo.
@@ -18,7 +66,8 @@ Es un contrato didáctico particular; no es JWT ni un flujo OAuth.
 ## Solicitar la invocación
 
 `POST /invocaciones` con `Authorization: Bearer <token>` y
-`Content-Type: application/json`. Cuerpo (usar una fecha vigente):
+`Content-Type: application/json`. Cuerpo con datos del JSON municipal u
+offline (usar una fecha vigente):
 
 ```json
 {
@@ -33,7 +82,10 @@ Es un contrato didáctico particular; no es JWT ni un flujo OAuth.
 
 Fecha de hoy o posterior, franja manha/tarde/noite, probabilidad numérica
 60–100, identificador entero positivo y nombre no vacío. El servidor valida
-la declaración recibida; no comprueba MeteoGalicia por su cuenta.
+la declaración recibida; no comprueba MeteoGalicia por su cuenta. En MeteoSIX
+no se envía `municipio_id` ni `probabilidad_lluvia`; el campo
+`precipitacion_lm2` debe ser positivo, con variable `precipitation_amount`,
+unidad `lm2` y el criterio documentado arriba.
 
 Respuesta **201**: campos recibidos más `id: "INV-001"` y
 `estado: "registrada"`. Cabecera `Location: /invocaciones/INV-001`.

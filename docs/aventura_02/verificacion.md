@@ -1,17 +1,23 @@
-# Verificación de esta entrega
+# Verificación de aventura_02
 
-- Python 3.12 y Requests 2.34.2.
-- 12 pruebas aprobadas: flujo HTTP completo, ejecución desde otra carpeta,
-  ausencia de condiciones, datos ausentes/incorrectos y fechas pasadas,
-  autenticación/caducidad, cuerpos inválidos, 404, reintentos 503, JSON roto,
-  contrato inesperado, timeout y ausencia de reintentos POST.
-- Cinco etapas ejecutadas en modo demo, sin errores.
-- ensayar.py completó INV-001 y todos los escenarios de error.
-- La consulta directa a MeteoGalicia desde el entorno de preparación agotó
-  el timeout de lectura. No se afirma haber verificado el flujo real completo.
-  Se consultaron previamente la documentación oficial y el endpoint público.
-- Los datos sintéticos están identificados en consola y resultado.
+- Documentación oficial consultada: MeteoSIX v5.1 (5.1.0), publicada en
+  octubre de 2026. La API vigente conserva la base `/apiv5/`; la operación es
+  `getNumericForecastInfo`, con `API_KEY` y coordenadas `longitud,latitud`.
+- El manual define `precipitation_amount` como acumulación de la hora anterior
+  en `lm2`; no documenta una variable de probabilidad de lluvia.
+- La respuesta sin clave devolvió la excepción documentada `005`; no se hizo
+  ninguna consulta autenticada con la clave real.
+- 29 pruebas aprobadas en las dos aventuras. Incluyen la adaptación de MeteoSIX,
+  clave ausente, errores, datos incompletos, validación de la invocación,
+  reintentos GET y ausencia de reintentos POST. Ninguna prueba consulta Internet.
+- `python aventura_02/ensayar.py` completó la invocación local y los escenarios
+  de error con meteorología sintética.
+- `aventura_02/.env` está ignorado por Git. No se inspeccionó su contenido ni se
+  utilizó en las pruebas.
 
-Antes de la charla, ejecutar ensayar.py en el ordenador del ponente y comprobar
-una consulta real desde su red. La instalación inicial de dependencias requiere
-Internet; el ensayo posterior no.
+Pendiente: ejecutar `python aventura_02/etapas/06_consultar_meteosix.py` y
+`python aventura_02/cliente.py --fuente meteosix --demo` desde el equipo y la
+red de la charla con `METEOSIX_API_KEY` configurada. La consulta real puede no
+tener precipitación positiva en los días/franjas disponibles; en tal caso el
+cliente no crea una invocación, por diseño. El JSON municipal y `--offline`
+siguen siendo alternativas.

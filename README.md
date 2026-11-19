@@ -29,7 +29,7 @@ python aventura_01/procesar.py
 Resultado inicial esperado: 18 registros leídos, 12 válidos, 6 rechazados y
 4 prioritarios. Los originales de entrada no se modifican.
 
-**Segunda aventura:** instalar Requests y ejecutar el ensayo completo.
+**Segunda aventura:** instalar Requests y python-dotenv y ejecutar el ensayo completo.
 
 ```sh
 python -m pip install -r aventura_02/requirements.txt
@@ -38,8 +38,9 @@ python aventura_02/ensayar.py
 
 El ensayo utiliza HTTP local, datos meteorológicos sintéticos identificados y
 una credencial pública de ejemplo. Arranca y cierra su servidor automáticamente.
-Después de instalar la dependencia, no requiere Internet. Para usar MeteoGalicia
-real y seguir la demo por etapas, consulta las instrucciones de la aventura 02.
+Después de instalar las dependencias, no requiere Internet. Para el JSON
+municipal público, MeteoSIX autenticado o la demo por etapas, consulta las
+instrucciones de la aventura 02.
 
 ## Organización
 
@@ -54,7 +55,7 @@ regeneran y el log conserva historial. Las salidas de la segunda no se distribuy
 
 ## Pruebas
 
-Todas (con Requests instalado):
+Todas (con las dependencias de aventura_02 instaladas):
 
 ```sh
 python -m unittest discover -s tests -t . -v
@@ -66,7 +67,7 @@ Solo la primera, sin instalar dependencias:
 python -m unittest discover -s tests/aventura_01 -t . -v
 ```
 
-Solo la segunda:
+Solo la segunda (requiere Requests y python-dotenv):
 
 ```sh
 python -m unittest discover -s tests/aventura_02 -t . -v
@@ -81,7 +82,8 @@ en un puerto libre. Ninguna suite consulta MeteoGalicia.
 
 La clave de demostración es deliberadamente pública y solo se usa con el
 servidor local preparado. No subas credenciales reales ni tokens. La plantilla
-está en `aventura_02/.env.example`; no se carga automáticamente.
+está en `aventura_02/.env.example`; cliente y servidor cargan
+`aventura_02/.env` explícitamente.
 
 La probabilidad de lluvia de MeteoGalicia no garantiza niebla ni lluvia. El
 ritual utiliza una regla ficticia. Los fallos preparados se ejecutan únicamente
