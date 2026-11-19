@@ -10,3 +10,7 @@ aventura_01/salida_riesgo_5/
 aventura_01/salida_ejemplos/
 *.log
 *.tmp
+
+.env
+aventura_02/.env
+aventura_02/salida/

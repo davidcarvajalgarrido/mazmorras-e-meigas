@@ -10,7 +10,7 @@ import tempfile
 import unittest
 
 
-ORIGINAL = Path(__file__).resolve().parents[1] / 'aventura_01'
+ORIGINAL = Path(__file__).resolve().parents[2] / 'aventura_01'
 
 
 class Aventura01Tests(unittest.TestCase):
